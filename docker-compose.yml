@@ -2,18 +2,19 @@ version: '3.8'
 
 services:
   pyspark:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     container_name: pyspark-jupyter
     ports:
-      - "8888:8888"   # Port for Jupyter Lab/Notebook
-      - "4040:4040"   # Port for Spark UI 
+      - "8888:8888"
+      - "4040:4040"
     volumes:
-      - ./work:/home/jovyan/work  #Mapping Work container
+      - ./work:/home/jovyan/work
+    env_file:                     # <-- NOWA SEKCJA
+      - .env                      # <-- Wskazujemy nasz ukryty plik
     environment:
-      - JUPYTER_ENABLE_LAB=yes    
-    user: root                    
+      - JUPYTER_ENABLE_LAB=yes
+      - GRANT_SUDO=yes
+    user: root
     depends_on:
       - postgres
 
